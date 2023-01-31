@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "snapshots_runtest_name": {
+            "defaultValue": "runtest",
+            "type": "String"
+        },
+        "disks_TestWebApp_OsDisk_1_45ae7a5a6b6d427c8a00077ef036ba0b_externalid": {
+            "defaultValue": "/subscriptions/8914bde9-610c-4358-9250-68afdf4f3a97/resourceGroups/WORKPLACEOS/providers/Microsoft.Compute/disks/TestWebApp_OsDisk_1_45ae7a5a6b6d427c8a00077ef036ba0b",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/snapshots",
+            "apiVersion": "2022-07-02",
+            "name": "[parameters('snapshots_runtest_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard_ZRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "osType": "Linux",
+                "hyperVGeneration": "V2",
+                "supportsHibernation": true,
+                "supportedCapabilities": {
+                    "acceleratedNetwork": true,
+                    "architecture": "x64"
+                },
+                "creationData": {
+                    "createOption": "Copy",
+                    "sourceResourceId": "[parameters('disks_TestWebApp_OsDisk_1_45ae7a5a6b6d427c8a00077ef036ba0b_externalid')]"
+                },
+                "diskSizeGB": 30,
+                "encryption": {
+                    "type": "EncryptionAtRestWithPlatformKey"
+                },
+                "incremental": false,
+                "networkAccessPolicy": "AllowAll",
+                "publicNetworkAccess": "Enabled",
+                "dataAccessAuthMode": "None",
+                "diskState": "Unattached"
+            }
+        }
+    ]
+}
